@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% macro header() %}
+    <header class="header-area header-sticky">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <!-- ***** Logo Start ***** -->
+                        <a href="{{ url_for('serve_index') }}" class="logo">
+                            <img src="../static/images/logo.png">
+                        </a>
+                        <!-- ***** Logo End ***** -->
+                        <!-- ***** Menu Start ***** -->
+                        <ul class="nav">
+                            <li class="scroll-to-section"><a href="{{ url_for('serve_index') }}" class="active" style="margin-top: 7px;">Home</a></li>
+                            <li class="scroll-to-section"><a href="{{ url_for('get_products') }}" style="margin-top: 7px;">Products</a></li>
+                            <li class="submenu" style="margin-top: 7px;">
+                                <a href="{{ url_for('get_categories') }}">Categories</a>
+                                <ul style="width: max-content; padding-left: 20px; padding-right: 20px; align-items: center;">
+                                    {% for category in all_categories() %}
+                                    <li style="width: auto; padding-left: 20px; padding-right: 20px; align-items: center;"><a style="width: auto; padding-left: 20px; padding-right: 20px; text-align: center;" href="{{ url_for('get_category_by_id', id=category.id) }}">{{ category.name }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                            {% if not check_user(request.cookies.get('token')) %}
+                            <li class="scroll-to-section"><a href="{{ url_for('serve_login') }}" style="margin-top: 7px;">Login</a></li>
+                            <li class="scroll-to-section"><a href="{{ url_for('serve_register') }}" style="margin-top: 7px;">Register</a></li>
+                            {% else %}
+                            <li class="scroll-to-section">
+                                <form id="subscribe" action="/users/logout" method="post">
+                                    <button type="submit" id="form-submit" style="width: 100px; height: 50px; display: inline-block; text-align: center; line-height: 44px; background-color: #2a2a2a; box-shadow: none; border: 1px solid transparent; color: #fff;">Logout</button>
+                                </form>
+                            </li>
+                            {% endif %}
+                        </ul>        
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                        <!-- ***** Menu End ***** -->
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    {% endmacro %}
+</body>
+</html>
